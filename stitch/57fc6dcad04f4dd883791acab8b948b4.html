@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Status Utility - Retry Discipline Probe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#575e70",
+                        "on-primary-fixed": "#141b2b",
+                        "surface-container-highest": "#e1e3e4",
+                        "inverse-surface": "#2e3132",
+                        "background": "#f8f9fa",
+                        "primary-fixed": "#dce2f7",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface": "#f8f9fa",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#00714e",
+                        "surface-container-low": "#f3f4f5",
+                        "on-surface": "#191c1d",
+                        "secondary-fixed": "#85f8c4",
+                        "primary": "#000000",
+                        "on-primary-container": "#7d8497",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "surface-dim": "#d9dadb",
+                        "on-background": "#191c1d",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c6c6cd",
+                        "on-surface-variant": "#45464c",
+                        "primary-fixed-dim": "#c0c6db",
+                        "primary-container": "#141b2b",
+                        "secondary-fixed-dim": "#68dba9",
+                        "on-tertiary-container": "#c76c00",
+                        "tertiary-fixed": "#ffdcc3",
+                        "tertiary-container": "#2f1500",
+                        "secondary": "#006c4a",
+                        "on-secondary-fixed": "#002114",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "surface-variant": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-container": "#82f5c1",
+                        "on-secondary-fixed-variant": "#005137",
+                        "surface-container": "#edeeef",
+                        "tertiary": "#000000",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#404758",
+                        "outline": "#76777d",
+                        "on-tertiary-fixed": "#2f1500",
+                        "inverse-primary": "#c0c6db"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "card-padding": "12px",
+                        "margin-page": "32px",
+                        "stack-gap": "8px",
+                        "gutter": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter", "sans-serif"],
+                        "code-md": ["JetBrains Mono", "monospace"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "code-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+        .pip-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen flex items-center justify-center p-gutter">
+<!-- TopNav - Destination Shell -->
+<header class="fixed top-0 left-0 w-full bg-background border-b border-outline-variant flex justify-between items-center h-16 px-gutter max-w-[1280px] mx-auto z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">sensors</span>
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-primary">Retry Discipline Probe</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-DEFAULT active:opacity-80">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-DEFAULT active:opacity-80">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<main class="w-full max-w-[600px] mt-24">
+<!-- Header -->
+<div class="mb-gutter flex flex-col gap-unit">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Status Utility</h1>
+<p class="text-on-surface-variant">System diagnostics and manual intervention controls.</p>
+</div>
+<!-- Status Cards -->
+<div class="grid grid-cols-3 gap-stack-gap mb-gutter">
+<!-- Probe Status -->
+<div class="bg-surface border border-outline-variant rounded-DEFAULT p-card-padding flex flex-col justify-between border-t-[3px] border-t-secondary transition-colors hover:border-primary">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-unit">Probe Status</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-secondary rounded-sm pip-pulse"></div>
+<span class="font-code-md text-code-md text-on-surface">ONLINE</span>
+</div>
+</div>
+<!-- Last Pulse -->
+<div class="bg-surface border border-outline-variant rounded-DEFAULT p-card-padding flex flex-col justify-between border-t-[3px] border-t-primary-container transition-colors hover:border-primary">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-unit">Last Pulse</span>
+<span class="font-code-md text-code-md text-on-surface">14ms ago</span>
+</div>
+<!-- Health Score -->
+<div class="bg-surface border border-outline-variant rounded-DEFAULT p-card-padding flex flex-col justify-between border-t-[3px] border-t-secondary transition-colors hover:border-primary">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-unit">Health Score</span>
+<span class="font-code-md text-code-md text-on-surface">99.8%</span>
+</div>
+</div>
+<!-- Interactive Area -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT p-gutter mb-gutter">
+<div class="flex items-center justify-between">
+<div class="flex flex-col gap-2">
+<span class="font-headline-md text-headline-md text-on-surface">System Control</span>
+<p class="text-on-surface-variant text-sm">Force system refresh or pause execution.</p>
+</div>
+<div class="flex items-center gap-gutter">
+<!-- Toggle Switch -->
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase" id="toggle-label">Ready</span>
+<button aria-checked="true" class="relative inline-flex h-6 w-11 items-center rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 bg-secondary" id="ACT_TOGGLE_STATUS" role="switch">
+<span class="sr-only">Toggle probe status</span>
+<span class="inline-block h-4 w-4 transform rounded-sm bg-white transition-transform translate-x-6"></span>
+</button>
+</div>
+<!-- Action Button -->
+<button class="bg-primary text-on-primary font-code-md text-code-md uppercase px-4 py-2 rounded-sm hover:bg-on-surface transition-colors active:opacity-80 flex items-center gap-2" id="ACT_REFRESH_STATUS">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+                        Refresh Probe
+                    </button>
+</div>
+</div>
+</div>
+<!-- Latest Activity (Table) -->
+<div class="bg-surface border border-outline-variant rounded-DEFAULT overflow-hidden">
+<div class="p-card-padding border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Latest Activity</span>
+<span class="font-code-md text-code-md text-on-surface-variant text-xs">Updated: Oct 24, 14:02:15</span>
+</div>
+<table class="w-full text-left border-collapse">
+<tbody class="font-code-md text-code-md text-on-surface">
+<tr class="bg-surface">
+<td class="p-card-padding border-b border-outline-variant text-secondary w-8"><span class="material-symbols-outlined text-[16px]">check_circle</span></td>
+<td class="p-card-padding border-b border-outline-variant">TX_OK</td>
+<td class="p-card-padding border-b border-outline-variant text-on-surface-variant">Payload successfully transmitted to target delta.</td>
+<td class="p-card-padding border-b border-outline-variant text-right">14:02:15</td>
+</tr>
+<tr class="bg-surface-bright">
+<td class="p-card-padding border-b border-outline-variant text-tertiary-container w-8"><span class="material-symbols-outlined text-[16px]">warning</span></td>
+<td class="p-card-padding border-b border-outline-variant">RETRY_1</td>
+<td class="p-card-padding border-b border-outline-variant text-on-surface-variant">Timeout detected, escalating to discipline queue.</td>
+<td class="p-card-padding border-b border-outline-variant text-right">14:01:42</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Conditional Empty State Panel (Hidden by default, shown for demonstration logic) -->
+<div class="hidden mt-gutter bg-error-container border border-error p-card-padding rounded-DEFAULT flex items-start gap-3" id="error-panel">
+<span class="material-symbols-outlined text-on-error-container mt-0.5">error</span>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-error-container text-sm">Initialization Required</span>
+<p class="text-on-error-container text-sm mt-1">No probe data found. Initialize the system to begin data collection.</p>
+</div>
+</div>
+</main>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('ACT_TOGGLE_STATUS');
+            const toggleLabel = document.getElementById('toggle-label');
+            const toggleThumb = toggleBtn.querySelector('span:not(.sr-only)');
+            let isReady = true;
+
+            toggleBtn.addEventListener('click', () => {
+                isReady = !isReady;
+                toggleBtn.setAttribute('aria-checked', isReady);
+                
+                if (isReady) {
+                    toggleBtn.classList.replace('bg-outline-variant', 'bg-secondary');
+                    toggleThumb.classList.replace('translate-x-1', 'translate-x-6');
+                    toggleLabel.textContent = 'Ready';
+                } else {
+                    toggleBtn.classList.replace('bg-secondary', 'bg-outline-variant');
+                    toggleThumb.classList.replace('translate-x-6', 'translate-x-1');
+                    toggleLabel.textContent = 'Paused';
+                }
+            });
+
+            // Simulate Refresh Action
+            const refreshBtn = document.getElementById('ACT_REFRESH_STATUS');
+            refreshBtn.addEventListener('click', () => {
+                const icon = refreshBtn.querySelector('.material-symbols-outlined');
+                icon.classList.add('animate-spin');
+                setTimeout(() => {
+                    icon.classList.remove('animate-spin');
+                }, 1000);
+            });
+        });
+    </script>
+</body></html>
