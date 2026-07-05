@@ -169,9 +169,19 @@ export function RetryDisciplineShellProvider({
   }, [state.initialized]);
 
   // Persist whenever the persisted-relevant slice changes (after init).
+  // NOTE: `state.storageStatus` is intentionally NOT in the dependency array.
+  // When persistState fails we dispatch STORAGE_CORRUPTED, which updates
+  // storageStatus; if storageStatus were a dependency the effect would fire
+  // again, attempt another write, dispatch again, and so on — infinite loop.
+  // The early return guards below keep that from happening regardless.
   useEffect(() => {
     if (!state.initialized) return;
-    if (state.storageStatus === 'unavailable') return;
+    if (
+      state.storageStatus === 'unavailable' ||
+      state.storageStatus === 'corrupted'
+    ) {
+      return;
+    }
     const result = persistState({
       activeSurfaceId: state.activeSurfaceId,
       activePanelId: state.activePanelId,
@@ -186,7 +196,6 @@ export function RetryDisciplineShellProvider({
     }
   }, [
     state.initialized,
-    state.storageStatus,
     state.activeSurfaceId,
     state.activePanelId,
     state.selectedRecordId,

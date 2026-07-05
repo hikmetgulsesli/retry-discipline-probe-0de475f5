@@ -26,14 +26,30 @@ const EMPTY_PERSISTED: RetryDisciplinePersistedShape = {
   records: [],
 };
 
+const VALID_SURFACE_IDS: ReadonlySet<string> = new Set<string>([
+  'SURF_STATUS_UTILITY',
+  'SURF_UNKNOWN',
+]);
+
+// Storage availability typically does not change during a page session,
+// so we cache the result of the probe to avoid redundant localStorage
+// write/delete cycles on every load, persist, and clear.
+let isStorageAvailableCached: boolean | null = null;
+
 export function isStorageAvailable(): boolean {
+  if (isStorageAvailableCached !== null) return isStorageAvailableCached;
   try {
-    if (typeof window === 'undefined' || !window.localStorage) return false;
+    if (typeof window === 'undefined' || !window.localStorage) {
+      isStorageAvailableCached = false;
+      return false;
+    }
     const probeKey = '__retry_discipline_probe_probe__';
     window.localStorage.setItem(probeKey, '1');
     window.localStorage.removeItem(probeKey);
+    isStorageAvailableCached = true;
     return true;
   } catch {
+    isStorageAvailableCached = false;
     return false;
   }
 }
@@ -43,6 +59,7 @@ function isPersistedShape(value: unknown): value is RetryDisciplinePersistedShap
   const v = value as Record<string, unknown>;
   if (v.version !== 1) return false;
   if (typeof v.activeSurfaceId !== 'string') return false;
+  if (!VALID_SURFACE_IDS.has(v.activeSurfaceId)) return false;
   if (v.activePanelId !== null && typeof v.activePanelId !== 'string') return false;
   if (v.selectedRecordId !== null && typeof v.selectedRecordId !== 'string') return false;
   if (!Array.isArray(v.records)) return false;
@@ -52,6 +69,7 @@ function isPersistedShape(value: unknown): value is RetryDisciplinePersistedShap
     if (typeof r.id !== 'string') return false;
     if (typeof r.label !== 'string') return false;
     if (typeof r.surfaceId !== 'string') return false;
+    if (!VALID_SURFACE_IDS.has(r.surfaceId)) return false;
     if (typeof r.updatedAt !== 'string') return false;
   }
   return true;
@@ -71,7 +89,10 @@ export function loadPersistedState(): RetryDisciplineRepoResult<RetryDisciplineP
     };
   }
   if (raw === null || raw === '') {
-    return { ok: true, data: EMPTY_PERSISTED };
+    // Return a fresh copy of the default state. Returning the shared
+    // EMPTY_PERSISTED reference would let downstream consumers accidentally
+    // mutate module state.
+    return { ok: true, data: defaultPersistedState() };
   }
   let parsed: unknown;
   try {
