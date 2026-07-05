@@ -1,0 +1,57 @@
+[
+  {
+    "screenId": "57fc6dcad04f4dd883791acab8b948b4",
+    "screenTitle": "Status Utility - Retry Discipline Probe",
+    "deviceType": "DESKTOP",
+    "elements": [
+      {
+        "type": "button",
+        "label": "settings",
+        "line": 111
+      },
+      {
+        "type": "button",
+        "label": "help",
+        "line": 114
+      },
+      {
+        "type": "button",
+        "label": "Toggle probe status",
+        "line": 157
+      },
+      {
+        "type": "button",
+        "label": "Probe",
+        "line": 163
+      }
+    ],
+    "navigation": [],
+    "buttons": [
+      {
+        "type": "button",
+        "label": "settings",
+        "line": 111
+      },
+      {
+        "type": "button",
+        "label": "help",
+        "line": 114
+      },
+      {
+        "type": "button",
+        "label": "Toggle probe status",
+        "line": 157
+      },
+      {
+        "type": "button",
+        "label": "Probe",
+        "line": 163
+      }
+    ],
+    "inputs": [],
+    "hardcodedData": [],
+    "totalInteractive": 4,
+    "requiresRouter": false,
+    "requiresDragDrop": false
+  }
+]
