@@ -1,0 +1,37 @@
+[
+  {
+    "screenId": "57fc6dcad04f4dd883791acab8b948b4",
+    "title": "Status Utility - Retry Discipline Probe",
+    "componentName": "StatusUtilityRetryDisciplineProbe",
+    "file": "src/screens/StatusUtilityRetryDisciplineProbe.tsx",
+    "buttons": 4,
+    "inputs": 0,
+    "links": 0,
+    "actions": [
+      {
+        "id": "settings-1",
+        "kind": "button",
+        "label": "Settings",
+        "index": 0
+      },
+      {
+        "id": "help-2",
+        "kind": "button",
+        "label": "Help",
+        "index": 1
+      },
+      {
+        "id": "toggle-probe-status-3",
+        "kind": "button",
+        "label": "Toggle probe status",
+        "index": 2
+      },
+      {
+        "id": "refresh-probe-4",
+        "kind": "button",
+        "label": "Refresh Probe",
+        "index": 3
+      }
+    ]
+  }
+]
